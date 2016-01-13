@@ -24,6 +24,8 @@ public class BlueAutoRamp extends PushBotAuto
     DcMotor motorRight;
     DcMotor motorLeft;
 
+    //dicking around in here
+
     Servo rotate;
     Servo dump;
     Servo light;
