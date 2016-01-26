@@ -47,25 +47,35 @@ public class TeleOpBlue extends OpMode {
 	DcMotor leftScissorsMotor;
 	DcMotor rightDriveMotor;
 	DcMotor leftDriveMotor;
-
-
+	DcMotor debrisCollectMotor;
+	DcMotor dumpMotor;
 
 	float scale = (float) 1.0;
 
 	public void init() {
 		rightScissorsMotor = hardwareMap.dcMotor.get("rightScissorsMotor");
 		leftScissorsMotor = hardwareMap.dcMotor.get("leftScissorsMotor");
+		rightDriveMotor = hardwareMap.dcMotor.get("rightDriveMotor");
+		leftDriveMotor = hardwareMap.dcMotor.get("leftDriveMotor");
+		debrisCollectMotor = hardwareMap.dcMotor.get("debrisCollectMotor");
+		dumpMotor = hardwareMap.dcMotor.get("dumpMotor");
 
+		dumpMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
 		rightScissorsMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
 	}
 
 	public void start() {
+		dumpMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
 		rightScissorsMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
 	}
 	// Slow down after 1850 and before 500
 	public void loop() {
 		rightScissorsMotor.setDirection(DcMotor.Direction.FORWARD);
 		leftScissorsMotor.setDirection(DcMotor.Direction.REVERSE);
+		rightDriveMotor.setDirection(DcMotor.Direction.FORWARD);
+		leftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
+		debrisCollectMotor.setDirection(DcMotor.Direction.FORWARD);
+		dumpMotor.setDirection(DcMotor.Direction.FORWARD);
 
 		if (gamepad1.a)
 		{
@@ -95,6 +105,40 @@ public class TeleOpBlue extends OpMode {
 			else {
 				rightScissorsMotor.setPower(0.0);
 				leftScissorsMotor.setPower(0.0);
+			}
+		}
+
+		if(Math.abs(gamepad1.left_stick_y) > 0.02)
+		{
+			leftDriveMotor.setPower(gamepad1.left_stick_y);
+		}
+		if(Math.abs(gamepad1.right_stick_y) > 0.02)
+		{
+			rightDriveMotor.setPower(gamepad1.right_stick_y);
+		}
+
+		if(gamepad1.right_trigger > 0.7)
+		{
+			debrisCollectMotor.setPower(0);
+		}
+		else if(gamepad1.left_trigger > 0.7)
+		{
+			debrisCollectMotor.setPower(-1);
+		}
+		else
+		{
+			debrisCollectMotor.setPower(1);
+		}
+
+		if(dumpMotor.getCurrentPosition() < 980 && dumpMotor.getCurrentPosition() >= 0)
+		{
+			if(gamepad1.right_bumper)
+			{
+				dumpMotor.setPower(0.2);
+			}
+			if(gamepad1.left_bumper)
+			{
+				dumpMotor.setPower(-0.2);
 			}
 		}
 
