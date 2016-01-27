@@ -43,6 +43,7 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
  */
 public class TeleOpRed extends OpMode {
 
+	// test
 	DcMotor rightScissorsMotor;
 	DcMotor leftScissorsMotor;
 	DcMotor rightDriveMotor;
