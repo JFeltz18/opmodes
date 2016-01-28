@@ -73,9 +73,30 @@ public class TeleOpRed extends OpMode {
 	public void loop() {
 		rightScissorsMotor.setDirection(DcMotor.Direction.FORWARD);
 		leftScissorsMotor.setDirection(DcMotor.Direction.REVERSE);
-		rightDriveMotor.setDirection(DcMotor.Direction.FORWARD);
-		leftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
-		debrisCollectMotor.setDirection(DcMotor.Direction.FORWARD);
+		rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
+		leftDriveMotor.setDirection(DcMotor.Direction.FORWARD);
+		debrisCollectMotor.setDirection(DcMotor.Direction.REVERSE);
+		dumpMotor.setDirection(DcMotor.Direction.REVERSE);
+
+
+		if (gamepad1.right_trigger < 0.7 && gamepad1.left_trigger < 0.7)
+		{
+			debrisCollectMotor.setPower(1.0);
+		}
+		else
+		{
+			if (gamepad1.right_trigger > 0.7)
+			{
+				debrisCollectMotor.setPower(0.0);
+			}
+			else
+			{
+				if (gamepad1.left_trigger > 0.7)
+				{
+					debrisCollectMotor.setPower(-1.0);
+				}
+			}
+		}
 
 		if (gamepad1.a)
 		{
@@ -107,38 +128,39 @@ public class TeleOpRed extends OpMode {
 				leftScissorsMotor.setPower(0.0);
 			}
 		}
-		if(Math.abs(gamepad1.left_stick_y) > 0.02)
+
+		if(Math.abs(gamepad1.left_stick_y) > 0.1)
 		{
 			leftDriveMotor.setPower(gamepad1.left_stick_y);
 		}
-		if(Math.abs(gamepad1.right_stick_y) > 0.02)
+		else
+		{
+			leftDriveMotor.setPower(0.0);
+		}
+
+		if(Math.abs(gamepad1.right_stick_y) > 0.1)
 		{
 			rightDriveMotor.setPower(gamepad1.right_stick_y);
 		}
-
-		if(gamepad1.right_trigger > 0.7)
-		{
-			debrisCollectMotor.setPower(0);
-		}
-		else if(gamepad1.left_trigger > 0.7)
-		{
-			debrisCollectMotor.setPower(-1);
-		}
 		else
 		{
-			debrisCollectMotor.setPower(1);
+			rightDriveMotor.setPower(0.0);
 		}
 
-		if(dumpMotor.getCurrentPosition() < 980 && dumpMotor.getCurrentPosition() >= 0)
+		if(dumpMotor.getCurrentPosition() < 250 && dumpMotor.getCurrentPosition() >= 0)
 		{
 			if(gamepad1.right_bumper)
 			{
-				dumpMotor.setPower(0.2);
+				dumpMotor.setPower(0.1);
 			}
 			if(gamepad1.left_bumper)
 			{
-				dumpMotor.setPower(-0.2);
+				dumpMotor.setPower(-0.1);
 			}
+		}
+		else
+		{
+			dumpMotor.setPower(0.0);
 		}
 
 		telemetry.addData("Lift Encoder Value: ", rightScissorsMotor.getCurrentPosition());
