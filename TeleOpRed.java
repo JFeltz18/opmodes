@@ -151,11 +151,11 @@ public class TeleOpRed extends OpMode {
 		{
 			if(gamepad1.right_bumper)
 			{
-				dumpMotor.setPower(0.1);
+				dumpMotor.setPower(0.02);
 			}
 			if(gamepad1.left_bumper)
 			{
-				dumpMotor.setPower(-0.1);
+				dumpMotor.setPower(-0.02);
 			}
 		}
 		else
