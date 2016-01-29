@@ -76,7 +76,7 @@ public class TeleOpRed extends OpMode {
 		rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
 		leftDriveMotor.setDirection(DcMotor.Direction.FORWARD);
 		debrisCollectMotor.setDirection(DcMotor.Direction.REVERSE);
-		dumpMotor.setDirection(DcMotor.Direction.REVERSE);
+		dumpMotor.setDirection(DcMotor.Direction.FORWARD);
 
 
 		if (gamepad1.right_trigger < 0.7 && gamepad1.left_trigger < 0.7)
@@ -147,23 +147,21 @@ public class TeleOpRed extends OpMode {
 			rightDriveMotor.setPower(0.0);
 		}
 
-		if(dumpMotor.getCurrentPosition() < 250 && dumpMotor.getCurrentPosition() >= 0)
-		{
-			if(gamepad1.right_bumper)
+
+			if (gamepad1.right_bumper)
 			{
 				dumpMotor.setPower(0.02);
 			}
-			if(gamepad1.left_bumper)
-			{
-				dumpMotor.setPower(-0.02);
+			else {
+				if (gamepad1.left_bumper) {
+					dumpMotor.setPower(-0.02);
+				} else {
+					dumpMotor.setPower(0.0);
+				}
 			}
-		}
-		else
-		{
-			dumpMotor.setPower(0.0);
-		}
 
 		telemetry.addData("Lift Encoder Value: ", rightScissorsMotor.getCurrentPosition());
+		telemetry.addData("Dump Encoder Value: ", dumpMotor.getCurrentPosition());
 	}
 
 	@Override
