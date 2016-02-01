@@ -52,6 +52,8 @@ public class TeleOpRed extends OpMode {
 	DcMotor dumpMotor;
 
 	float scale = (float) 1.0;
+	boolean collectionOn = true;
+	boolean collectionReversed = false;
 
 	public void init() {
 		rightScissorsMotor = hardwareMap.dcMotor.get("rightScissorsMotor");
@@ -76,25 +78,22 @@ public class TeleOpRed extends OpMode {
 		rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
 		leftDriveMotor.setDirection(DcMotor.Direction.FORWARD);
 		debrisCollectMotor.setDirection(DcMotor.Direction.REVERSE);
-		dumpMotor.setDirection(DcMotor.Direction.FORWARD);
+		dumpMotor.setDirection(DcMotor.Direction.REVERSE);
 
 
-		if (gamepad1.right_trigger < 0.7 && gamepad1.left_trigger < 0.7)
+		if (!gamepad2.a && !gamepad2.b)
 		{
 			debrisCollectMotor.setPower(1.0);
 		}
 		else
 		{
-			if (gamepad1.right_trigger > 0.7)
+			if (gamepad2.b && !gamepad2.a)
 			{
-				debrisCollectMotor.setPower(0.0);
+				debrisCollectMotor.setPower(-1.0);
 			}
 			else
 			{
-				if (gamepad1.left_trigger > 0.7)
-				{
-					debrisCollectMotor.setPower(-1.0);
-				}
+				debrisCollectMotor.setPower(0.0);
 			}
 		}
 
@@ -148,17 +147,17 @@ public class TeleOpRed extends OpMode {
 		}
 
 
-			if (gamepad1.right_bumper)
-			{
-				dumpMotor.setPower(0.02);
+		if (gamepad2.right_bumper)
+		{
+			dumpMotor.setPower(0.025);
+		}
+		else {
+			if (gamepad2.left_bumper) {
+				dumpMotor.setPower(-0.025`);
+			} else {
+				dumpMotor.setPower(0.0);
 			}
-			else {
-				if (gamepad1.left_bumper) {
-					dumpMotor.setPower(-0.02);
-				} else {
-					dumpMotor.setPower(0.0);
-				}
-			}
+		}
 
 		telemetry.addData("Lift Encoder Value: ", rightScissorsMotor.getCurrentPosition());
 		telemetry.addData("Dump Encoder Value: ", dumpMotor.getCurrentPosition());
