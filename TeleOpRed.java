@@ -55,6 +55,8 @@ public class TeleOpRed extends OpMode {
 	boolean collectionOn = true;
 	boolean collectionReversed = false;
 
+
+
 	public void init() {
 		rightScissorsMotor = hardwareMap.dcMotor.get("rightScissorsMotor");
 		leftScissorsMotor = hardwareMap.dcMotor.get("leftScissorsMotor");
@@ -73,10 +75,10 @@ public class TeleOpRed extends OpMode {
 	}
 	// Slow down after 1850 and before 500
 	public void loop() {
-		rightScissorsMotor.setDirection(DcMotor.Direction.FORWARD);
-		leftScissorsMotor.setDirection(DcMotor.Direction.REVERSE);
-		rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
-		leftDriveMotor.setDirection(DcMotor.Direction.FORWARD);
+		rightScissorsMotor.setDirection(DcMotor.Direction.REVERSE);
+		leftScissorsMotor.setDirection(DcMotor.Direction.FORWARD);
+		rightDriveMotor.setDirection(DcMotor.Direction.FORWARD);
+		leftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
 		debrisCollectMotor.setDirection(DcMotor.Direction.REVERSE);
 		dumpMotor.setDirection(DcMotor.Direction.REVERSE);
 
@@ -153,7 +155,7 @@ public class TeleOpRed extends OpMode {
 		}
 		else {
 			if (gamepad2.left_bumper) {
-				dumpMotor.setPower(-0.025`);
+				dumpMotor.setPower(-0.025);
 			} else {
 				dumpMotor.setPower(0.0);
 			}
