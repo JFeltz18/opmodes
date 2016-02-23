@@ -125,7 +125,7 @@ public abstract class BaseAuto extends LinearOpMode
     {
         if (d == TurnDirection.CLOCKWISE)
         {
-            while (sensorGyro.getIntegratedZValue() != (originalTotalRotation + turnAngle))
+            while (sensorGyro.getIntegratedZValue() < (originalTotalRotation + turnAngle))
             {
                 rightDriveMotor.setPower(-0.4675);
                 leftDriveMotor.setPower(0.1);
@@ -135,7 +135,7 @@ public abstract class BaseAuto extends LinearOpMode
         }
         else
         {
-            while (sensorGyro.getIntegratedZValue() != (originalTotalRotation - turnAngle))
+            while (sensorGyro.getIntegratedZValue() > (originalTotalRotation - turnAngle))
             {
                 rightDriveMotor.setPower(0.4675);
                 leftDriveMotor.setPower(-1.0);
