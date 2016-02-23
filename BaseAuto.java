@@ -96,7 +96,10 @@ public abstract class BaseAuto extends LinearOpMode
             {
                 rightDriveMotor.setPower(1.0);
                 leftDriveMotor.setPower(1.0);
+                telemetry.addData("encoder position", -1 * rightDriveMotor.getCurrentPosition());
+                waitOneFullHardwareCycle();
             }
+            telemetry.clearData();
             rightDriveMotor.setPower(0.0);
             leftDriveMotor.setPower(0.0);
         }
@@ -107,6 +110,7 @@ public abstract class BaseAuto extends LinearOpMode
                 rightDriveMotor.setPower(-1.0);
                 leftDriveMotor.setPower(-1.0);
                 telemetry.addData("encoder position", -1 * rightDriveMotor.getCurrentPosition());
+                waitOneFullHardwareCycle();
             }
             telemetry.clearData();
             rightDriveMotor.setPower(0.0);
@@ -126,6 +130,7 @@ public abstract class BaseAuto extends LinearOpMode
                 rightDriveMotor.setPower(-0.4675);
                 leftDriveMotor.setPower(0.1);
                 telemetry.addData("Gyro Position", sensorGyro.getIntegratedZValue());
+                waitOneFullHardwareCycle();
             }
         }
         else
@@ -135,6 +140,7 @@ public abstract class BaseAuto extends LinearOpMode
                 rightDriveMotor.setPower(0.4675);
                 leftDriveMotor.setPower(-1.0);
                 telemetry.addData("Gyro Position", sensorGyro.getIntegratedZValue());
+                waitOneFullHardwareCycle();
 
             }
         }
