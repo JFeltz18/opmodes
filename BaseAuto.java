@@ -1,14 +1,9 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.hardware.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.GyroSensor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ServoController;
-
-import java.io.InterruptedIOException;
-import java.util.Calendar;
 //------------------------------------------------------------------------------
 //
 // PushBotAuto
@@ -22,7 +17,7 @@ import java.util.Calendar;
  * @author SSI Robotics
  * @version 2015-08-01-06-01
  */
-public class BlueSideAuto extends LinearOpMode
+public abstract class BaseAuto extends LinearOpMode
 {
 
     DcMotor rightScissorsMotor;
@@ -31,7 +26,7 @@ public class BlueSideAuto extends LinearOpMode
     DcMotor leftDriveMotor;
     DcMotor debrisCollectMotor;
     DcMotor dumpMotor;
-    GyroSensor sensorGyro;
+    ModernRoboticsI2cGyro sensorGyro;
 
     int xVal, yVal, zVal = 0;
     int heading = 0;
@@ -64,13 +59,15 @@ public class BlueSideAuto extends LinearOpMode
         rightDriveMotor = hardwareMap.dcMotor.get("rightDriveMotor");
         leftDriveMotor = hardwareMap.dcMotor.get("leftDriveMotor");
         dumpMotor = hardwareMap.dcMotor.get("dumpMotor");
-        sensorGyro = hardwareMap.gyroSensor.get("gyro");
+        sensorGyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
 
         rightScissorsMotor.setDirection(DcMotor.Direction.REVERSE);
         leftScissorsMotor.setDirection(DcMotor.Direction.FORWARD);
         rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
         leftDriveMotor.setDirection(DcMotor.Direction.FORWARD);
         debrisCollectMotor.setDirection(DcMotor.Direction.REVERSE);
+        dumpMotor.setDirection(DcMotor.Direction.REVERSE);
+
 
         dumpMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         rightDriveMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -87,32 +84,61 @@ public class BlueSideAuto extends LinearOpMode
         rightDriveMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
 
         waitForStart();
-
-        recursiveAuto(0);
     }
 
+    public abstract void recursiveAuto(int step) throws InterruptedException;
 
-    public void recursiveAuto(int step) throws InterruptedException
+    public final void travel(int encoderCounts, int originalEncoderCount, TravelDirection d) throws InterruptedException
     {
-
-        if (step == 0)
+        if (d == TravelDirection.FORWARD)
         {
-            while (rightDriveMotor.getCurrentPosition() < 3000)
+            while (((rightDriveMotor.getCurrentPosition() * -1) - originalEncoderCount) < encoderCounts)
             {
-                rightDriveMotor.setPower(0.29);
-                leftDriveMotor.setPower(0.5);
+                rightDriveMotor.setPower(1.0);
+                leftDriveMotor.setPower(1.0);
             }
             rightDriveMotor.setPower(0.0);
             leftDriveMotor.setPower(0.0);
-            recursiveAuto(step + 1);
         }
-        if (step == 1)
+        else
         {
-           while (opModeIsActive())
-           {
-               telemetry.addData("Gyro Heading", sensorGyro.getHeading());
-           }
+            while (((rightDriveMotor.getCurrentPosition() * -1) - originalEncoderCount) > encoderCounts)
+            {
+                rightDriveMotor.setPower(-1.0);
+                leftDriveMotor.setPower(-1.0);
+                telemetry.addData("encoder position", -1 * rightDriveMotor.getCurrentPosition());
+            }
+            telemetry.clearData();
+            rightDriveMotor.setPower(0.0);
+            leftDriveMotor.setPower(0.0);
         }
+        rightDriveMotor.setPower(0.0);
+        leftDriveMotor.setPower(0.0);
 
+    }
+
+    public final void rotate(int turnAngle, int originalTotalRotation, TurnDirection d) throws InterruptedException
+    {
+        if (d == TurnDirection.CLOCKWISE)
+        {
+            while (sensorGyro.getIntegratedZValue() != (originalTotalRotation + turnAngle))
+            {
+                rightDriveMotor.setPower(-0.4675);
+                leftDriveMotor.setPower(0.1);
+                telemetry.addData("Gyro Position", sensorGyro.getIntegratedZValue());
+            }
+        }
+        else
+        {
+            while (sensorGyro.getIntegratedZValue() != (originalTotalRotation - turnAngle))
+            {
+                rightDriveMotor.setPower(0.4675);
+                leftDriveMotor.setPower(-1.0);
+                telemetry.addData("Gyro Position", sensorGyro.getIntegratedZValue());
+
+            }
+        }
+        rightDriveMotor.setPower(0.0);
+        leftDriveMotor.setPower(0.0);
     }
 } // PushBotAuto

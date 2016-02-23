@@ -149,13 +149,13 @@ public class TeleOpRed extends OpMode {
 		}
 
 
-		if (gamepad2.right_bumper)
+		if (gamepad2.left_bumper)
 		{
-			dumpMotor.setPower(0.025);
+			dumpMotor.setPower(0.03);
 		}
 		else {
-			if (gamepad2.left_bumper) {
-				dumpMotor.setPower(-0.025);
+			if (gamepad2.right_bumper) {
+				dumpMotor.setPower(-0.03);
 			} else {
 				dumpMotor.setPower(0.0);
 			}
@@ -163,6 +163,7 @@ public class TeleOpRed extends OpMode {
 
 		telemetry.addData("Lift Encoder Value: ", rightScissorsMotor.getCurrentPosition());
 		telemetry.addData("Dump Encoder Value: ", dumpMotor.getCurrentPosition());
+		telemetry.addData("Left Drive Encoder Value", leftDriveMotor.getCurrentPosition());
 	}
 
 	@Override
