@@ -141,7 +141,6 @@ public abstract class BaseAuto extends LinearOpMode
                 leftDriveMotor.setPower(-1.0);
                 telemetry.addData("Gyro Position", sensorGyro.getIntegratedZValue());
                 waitOneFullHardwareCycle();
-
             }
         }
         rightDriveMotor.setPower(0.0);
