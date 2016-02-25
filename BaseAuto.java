@@ -90,11 +90,13 @@ public abstract class BaseAuto extends LinearOpMode
 
     public final void travel(int encoderCounts, int originalEncoderCount, TravelDirection d) throws InterruptedException
     {
+        int origGyro = sensorGyro.getIntegratedZValue();
         if (d == TravelDirection.FORWARD)
         {
             while (((rightDriveMotor.getCurrentPosition() * -1) - originalEncoderCount) < encoderCounts)
             {
-                rightDriveMotor.setPower(1.0);
+                rightDriveMotor.setPower(1.0 - (((sensorGyro.getIntegratedZValue() + 180) - (origGyro + 180))
+                        /360));
                 leftDriveMotor.setPower(1.0);
                 telemetry.addData("encoder position", -1 * rightDriveMotor.getCurrentPosition());
                 waitOneFullHardwareCycle();
