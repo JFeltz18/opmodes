@@ -90,7 +90,7 @@ public abstract class BaseAuto extends LinearOpMode
 
     public final void travel(int encoderCounts, int originalEncoderCount, TravelDirection d) throws InterruptedException
     {
-        int origGyro = sensorGyro.getIntegratedZValue();
+        double origGyro = sensorGyro.getIntegratedZValue();
         if (d == TravelDirection.FORWARD)
         {
             while (((rightDriveMotor.getCurrentPosition() * -1) - originalEncoderCount) < encoderCounts)
