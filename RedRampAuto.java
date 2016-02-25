@@ -20,9 +20,6 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 public class RedRampAuto extends BaseAuto {
 
 
-
-
-
     @Override
     public void runOpMode() throws InterruptedException {
         super.runOpMode();
@@ -34,14 +31,28 @@ public class RedRampAuto extends BaseAuto {
 
     public void recursiveAuto(int step) throws InterruptedException // 9000 encoder clicks equals 86"
     {
-        if (step == 1)
-        {
-            travel(8275, rightDriveMotor.getCurrentPosition(), TravelDirection.FORWARD);
+        if (step == 1) {
+            travel(8275, 0, TravelDirection.FORWARD);
+            rightDriveMotor.setPower(0);
+            leftDriveMotor.setPower(0);
+            Thread.sleep(1000);
+            waitOneFullHardwareCycle();
             recursiveAuto(2);
         }
-        if (step == 2)
-        {
+        if (step == 2) {
             rotate(45, sensorGyro.getIntegratedZValue(), TurnDirection.COUNTER_CLOCKWISE);
+        }
+        if (step == 3)
+        {
+            travel(1000, leftDriveMotor.getCurrentPosition(), TravelDirection.FORWARD);
+            //travel up to the climber bucket
+        }
+        if(step == 4)
+        {
+            //
+            leftScissorsMotor.setPower(0.5);
+            rightScissorsMotor.setPower(0.5);
+            //
         }
     }
 }

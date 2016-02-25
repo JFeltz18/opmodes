@@ -90,13 +90,14 @@ public abstract class BaseAuto extends LinearOpMode
 
     public final void travel(int encoderCounts, int originalEncoderCount, TravelDirection d) throws InterruptedException
     {
+        double origGyro = sensorGyro.getHeading();
         if (d == TravelDirection.FORWARD)
         {
-            while (((rightDriveMotor.getCurrentPosition() * -1) - originalEncoderCount) < encoderCounts)
+            while (((leftDriveMotor.getCurrentPosition() * -1) - originalEncoderCount) < encoderCounts)
             {
-                rightDriveMotor.setPower(1.0);
+                rightDriveMotor.setPower(1.0 - (((sensorGyro.getHeading() + 180) - (origGyro + 180)) /360));
                 leftDriveMotor.setPower(1.0);
-                telemetry.addData("encoder position", -1 * rightDriveMotor.getCurrentPosition());
+                telemetry.addData("encoder position", -1 * leftDriveMotor.getCurrentPosition());
                 waitOneFullHardwareCycle();
             }
             telemetry.clearData();
@@ -105,11 +106,11 @@ public abstract class BaseAuto extends LinearOpMode
         }
         else
         {
-            while (((rightDriveMotor.getCurrentPosition() * -1) - originalEncoderCount) > encoderCounts)
+            while (((leftDriveMotor.getCurrentPosition() * -1 - originalEncoderCount) > encoderCounts))
             {
                 rightDriveMotor.setPower(-1.0);
                 leftDriveMotor.setPower(-1.0);
-                telemetry.addData("encoder position", -1 * rightDriveMotor.getCurrentPosition());
+                telemetry.addData("encoder position", -1 * leftDriveMotor.getCurrentPosition());
                 waitOneFullHardwareCycle();
             }
             telemetry.clearData();
@@ -123,26 +124,20 @@ public abstract class BaseAuto extends LinearOpMode
 
     public final void rotate(int turnAngle, int originalTotalRotation, TurnDirection d) throws InterruptedException
     {
-        if (d == TurnDirection.CLOCKWISE)
-        {
-            while (sensorGyro.getIntegratedZValue() < (originalTotalRotation + turnAngle))
+
+            while (Math.abs(sensorGyro.getIntegratedZValue()) < Math.abs(originalTotalRotation) + turnAngle)
             {
-                rightDriveMotor.setPower(-0.4675);
-                leftDriveMotor.setPower(0.1);
+                if (d == TurnDirection.CLOCKWISE) {
+                    rightDriveMotor.setPower(-0.4675);
+                    leftDriveMotor.setPower(1.0);
+                }
+                else {
+                    rightDriveMotor.setPower(0.4675);
+                    leftDriveMotor.setPower(-1.0);
+                }
                 telemetry.addData("Gyro Position", sensorGyro.getIntegratedZValue());
                 waitOneFullHardwareCycle();
             }
-        }
-        else
-        {
-            while (sensorGyro.getIntegratedZValue() > (originalTotalRotation - turnAngle))
-            {
-                rightDriveMotor.setPower(0.4675);
-                leftDriveMotor.setPower(-1.0);
-                telemetry.addData("Gyro Position", sensorGyro.getIntegratedZValue());
-                waitOneFullHardwareCycle();
-            }
-        }
         rightDriveMotor.setPower(0.0);
         leftDriveMotor.setPower(0.0);
     }
