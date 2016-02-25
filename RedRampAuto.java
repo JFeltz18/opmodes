@@ -33,6 +33,10 @@ public class RedRampAuto extends BaseAuto {
     {
         if (step == 1) {
             travel(8275, 0, TravelDirection.FORWARD);
+            rightDriveMotor.setPower(0);
+            leftDriveMotor.setPower(0);
+            Thread.sleep(1000);
+            waitOneFullHardwareCycle();
             recursiveAuto(2);
         }
         if (step == 2) {
