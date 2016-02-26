@@ -161,7 +161,7 @@ public class TeleOpRed extends OpMode {
 			}
 		}
 
-		telemetry.addData("Lift Encoder Value: ", rightScissorsMotor.getCurrentPosition());
+		telemetry.addData("Lift Encoder Value: ", leftScissorsMotor.getCurrentPosition());
 		telemetry.addData("Dump Encoder Value: ", dumpMotor.getCurrentPosition());
 		telemetry.addData("Left Drive Encoder Value", leftDriveMotor.getCurrentPosition());
 	}
