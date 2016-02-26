@@ -36,12 +36,8 @@ public class BlueRampAuto extends BaseAuto {
             waitOneFullHardwareCycle();
             recursiveAuto(2);
         }
-        if (step == 2) {
-            rotate(45, sensorGyro.getIntegratedZValue(), TurnDirection.COUNTER_CLOCKWISE);
-            recursiveAuto(3);
-        }
 
-        if(step == 3)
+        if(step == 2)
         {
             while(Math.abs(rightScissorsMotor.getCurrentPosition()) < 7000) {
                 leftScissorsMotor.setPower(0.5);

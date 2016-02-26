@@ -39,18 +39,21 @@ public class RedRampAuto extends BaseAuto {
             waitOneFullHardwareCycle();
             recursiveAuto(2);
         }
-        if (step == 2) {
-            rotate(45, sensorGyro.getIntegratedZValue(), TurnDirection.COUNTER_CLOCKWISE);
-            recursiveAuto(3);
-        }
 
-        if(step == 3)
+        if(step == 2)
         {
             while(Math.abs(rightScissorsMotor.getCurrentPosition()) < 7000) {
                 leftScissorsMotor.setPower(0.5);
                 rightScissorsMotor.setPower(0.5);
             }
-            //
+            recursiveAuto(3);
+        }
+        //one full rotation for tetrix motor encoders is 1440 clicks, we want 1/4 rotation so 360 clicks (1440 / 4), added 10 for reasons
+        if(step == 3)
+        {
+            while(Math.abs(dumpMotor.getCurrentPosition()) > 370)
+            dumpMotor.setPower(.2);
+
         }
     }
 }
