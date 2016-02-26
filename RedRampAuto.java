@@ -49,9 +49,10 @@ public class RedRampAuto extends BaseAuto {
         }
         if(step == 4)
         {
-            //
-            leftScissorsMotor.setPower(0.5);
-            rightScissorsMotor.setPower(0.5);
+            while(rightScissorsMotor.getCurrentPosition() < 3000) {
+                leftScissorsMotor.setPower(0.5);
+                rightScissorsMotor.setPower(0.5);
+            }
             //
         }
     }
