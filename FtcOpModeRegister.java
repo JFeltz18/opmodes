@@ -58,11 +58,10 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("NullOp", NullOp.class);
 
     //manager.register("MatrixK9TeleOp", MatrixK9TeleOp.class);
-    manager.register("ScissorsLiftTest", ScissorsLiftTest.class);
-    manager.register("ScissorsLiftReset", ScissorsLiftReset.class);
     manager.register("TeleOpBlue", TeleOpBlue.class);
     manager.register("TeleOpRed", TeleOpRed.class);
     manager.register("RedRampAuto", RedRampAuto.class);
+    manager.register("BlueRampAuto", BlueRampAuto.class);
     manager.register("DON'T EVER RUN THIS", BaseAuto.class);
     //manager.register("AdafruitRGBExample", AdafruitRGBExample.class);
     //manager.register("ColorSensorDriver", ColorSensorDriver.class);
