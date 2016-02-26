@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
  * @author SSI Robotics
  * @version 2015-08-01-06-01
  */
-public class BlueRampAuto extends BaseAuto {
+public class BlueWaitAuto extends BaseAuto {
 
 
     @Override
@@ -29,6 +29,7 @@ public class BlueRampAuto extends BaseAuto {
     public void recursiveAuto(int step) throws InterruptedException // 9000 encoder clicks equals 86"
     {
         if (step == 1) {
+            Thread.sleep(11000);
             travel(9444, 0, TravelDirection.FORWARD);
             rightDriveMotor.setPower(0);
             leftDriveMotor.setPower(0);

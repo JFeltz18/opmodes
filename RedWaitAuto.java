@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
  * @author SSI Robotics
  * @version 2015-08-01-06-01
  */
-public class BlueRampAuto extends BaseAuto {
+public class RedWaitAuto extends BaseAuto {
 
 
     @Override
@@ -29,6 +29,7 @@ public class BlueRampAuto extends BaseAuto {
     public void recursiveAuto(int step) throws InterruptedException // 9000 encoder clicks equals 86"
     {
         if (step == 1) {
+            Thread.sleep(11000);
             travel(9444, 0, TravelDirection.FORWARD);
             rightDriveMotor.setPower(0);
             leftDriveMotor.setPower(0);
@@ -37,23 +38,20 @@ public class BlueRampAuto extends BaseAuto {
             recursiveAuto(2);
         }
 
-        if(step == 2) {
-            while (Math.abs(rightScissorsMotor.getCurrentPosition()) < 7000) {
+        if(step == 2)
+        {
+            while(Math.abs(rightScissorsMotor.getCurrentPosition()) < 7000) {
                 leftScissorsMotor.setPower(0.5);
                 rightScissorsMotor.setPower(0.5);
             }
             recursiveAuto(3);
-
         }
-            //one full rotation for tetrix motor encoders is 1440 clicks, we want 1/4 rotation so 360 clicks (1440 / 4), added 10 for reasons
-            if(step == 3)
-            {
-                while(Math.abs(dumpMotor.getCurrentPosition()) > 370)
-                    dumpMotor.setPower(.2);
+        //one full rotation for tetrix motor encoders is 1440 clicks, we want 1/4 rotation so 360 clicks (1440 / 4), added 10 for reasons
+        if(step == 3)
+        {
+            while(Math.abs(dumpMotor.getCurrentPosition()) > 370)
+            dumpMotor.setPower(.2);
 
-
-            }
-            //
         }
     }
-
+}
